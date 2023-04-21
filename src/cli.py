@@ -14,6 +14,7 @@ def main():
     log_file     = f"{logdir}/conversation_history.txt"
 
     generate_text = pipeline(model="databricks/dolly-v2-3b", torch_dtype=torch.bfloat16, trust_remote_code=True, device_map="auto")
+    # generate_text = pipeline(model="EleutherAI/pythia-2.8b", torch_dtype=torch.bfloat16, trust_remote_code=True, device_map="auto")
     
     # Load history from file
     try:

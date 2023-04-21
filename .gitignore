@@ -1,2 +1,3 @@
 .pdm.toml
 .pdm.toml
+__pycache__/
