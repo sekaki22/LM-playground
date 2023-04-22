@@ -39,6 +39,7 @@
   };
 
   const submitForm = async (hist) => {
+      console.log(textInput)
     chatHistory = [...chatHistory, { type: 'input', content: textInput }];
     const response = await fetch(`/predict?prompt=${encodeURIComponent(textInput)}`, {
       method: 'GET',
@@ -56,12 +57,31 @@
 </script>
 
 <main>
-  <h1>Svelte App</h1>
+    <h1>Svelte App</h1>
 
-  <div>
-    <label for="textbox">Text Input:</label>
-    <textarea bind:value="{textInput}" id="textbox" rows="4" cols="50"></textarea>
+  <div class="chat-window">
+    <div class="chat-history">
+      <h2>Chat History</h2>
+      <ul>
+        {#each chatHistory as entry (entry.content)}
+          <li class="{entry.type}">
+            <span class="label">{entry.type === 'input' ? 'You:' : 'Model:'}</span>
+          <div class="message-box">
+            {@html entry.content.replace(/\n/g, '<br>')}
+            </div>
+          </li>
+        {/each}
+      </ul>
+    </div>
+    <div class="input-area">
+      <label for="textbox">Text Input:</label>
+      <textarea bind:value="{textInput}" id="textbox" rows="4" cols="50"></textarea>
+      <div>
+        <button on:click="{submitForm}">Submit</button>
+      </div>
+    </div>
   </div>
+
     <TemplateChooser
     {templates}
     bind:selectedTemplate
@@ -75,20 +95,6 @@
   />
   <div>
     <button on:click="{submitForm}">Submit</button>
-  </div>
-
-  <div class="chat-history">
-    <h2>Chat History</h2>
-    <ul>
-      {#each chatHistory as entry (entry.content)}
-        <li class="{entry.type}">
-          <span class="label">{entry.type === 'input' ? 'You:' : 'Model:'}</span>
-          <div class="message-box">
-            {@html entry.content.replace(/\n/g, '<br>')}
-          </div>
-        </li>
-      {/each}
-    </ul>
   </div>
 
 
@@ -172,17 +178,22 @@
     padding: 0.5em;
     border-radius: 4px;
   }
-
-  .loading {
-    background-color: #f0ad4e;
+.chat-window {
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    max-width: 500px;
+    margin: 0 auto;
   }
 
-  .success {
-    background-color: #5cb85c;
+  .chat-history {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 1em;
   }
 
-  .error {
-    background-color: #d9534f;
+  .input-area {
+    flex-shrink: 1;
   }
 
 </style>
