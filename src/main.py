@@ -24,6 +24,11 @@ async def prompt(prompt: str):
 
     return response_text
 
+@app.get("/run_tests")
+async def test():
+    
+    pass
+
 @app.post("/model")
 async def prompt(model: ModelRequest):
     # try:

@@ -41,13 +41,15 @@
   };
 
   const submitForm = async (hist) => {
-    chatHistory = [...chatHistory, { type: 'input', content: textInput }];
+    chatHistory.push({ type: 'input', content: textInput });
+    chatHistory = chatHistory;
     const response = await fetch(`/predict?prompt=${encodeURIComponent(textInput)}`, {
       method: 'GET',
     });
     const data = await response.text();
 
-    chatHistory = [...chatHistory, { type: 'output', content: data }];
+    chatHistory.push({ type: 'output', content: data });
+    chatHistory = chatHistory;
     console.log(chatHistory)
   };
 </script>
@@ -86,66 +88,29 @@
   <div>
     <button on:click="{submitForm(chatHistory)}">Submit</button>
   </div>
-
-
   <div class="chat-history">
     <h2>Chat History</h2>
     <ul>
       {#each chatHistory as entry (entry.content)}
         <li class="{entry.type}">
           <span class="label">{entry.type === 'input' ? 'You:' : 'Model:'}</span>
-          <div class="message-box">
             {@html entry.content.replace(/\n/g, '<br>')}
-          </div>
         </li>
       {/each}
     </ul>
   </div>
-
-
-
 </main>
 
 <style>
   main {
     text-align: center;
     padding: 1em;
-    max-width: 500px;
+    max-width: 240px;
     margin: 0 auto;
-    font-family: 'Roboto', sans-serif;
-  }
-
-  h1 {
-    color: #59656f;
   }
 
   textarea {
     width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 0.5em;
-  }
-
-  select {
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 0.5em;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 0.5em;
-  }
-
-  button {
-    background-color: #8fb7c5;
-    color: white;
-    padding: 0.5em 1em;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
   }
 
   .chat-history {
@@ -158,32 +123,15 @@
   }
 
   .chat-history li {
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
     text-align: left;
   }
 
-  .chat-history .label {
+  .chat-history .input {
     font-weight: bold;
   }
 
-  .message-box {
-    display: inline-block;
-    max-width: 75%;
-    border-radius: 12px;
-    padding: 12px;
-    font-size: 14px;
-  }
-
-  .chat-history .input .message-box {
-    background-color: #b5e7a0;
-    margin-left: 1em;
-  }
-
-  .chat-history .output .message-box {
-    background-color: #a5d2ff;
-    margin-left: 1em;
-  }
-
+ 
   .loading, .success, .error {
     margin-top: 1em;
     padding: 0.5em;
@@ -203,4 +151,3 @@
   }
 
 </style>
-
