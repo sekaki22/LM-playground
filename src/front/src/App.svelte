@@ -1,5 +1,7 @@
 <script>
   import { onMount } from 'svelte';
+  import TemplateChooser from './TemplateChooser.svelte';
+  import ModelChooser from './ModelChooser.svelte';
 
   let textInput = '';
   let selectedTemplate = '';
@@ -14,10 +16,6 @@
 
   let chatHistory = [];
 
-  const populateTextbox = () => {
-    const template = templates.find((t) => t.name === selectedTemplate);
-    textInput = template ? template.content : '';
-  };
 
   let modelStatus = '';
 
@@ -50,43 +48,34 @@
     chatHistory = [...chatHistory, { type: 'output', content: data }];
     console.log(chatHistory)
   };
+
+  const populateTextbox = () => {
+    const template = templates.find((t) => t.name === selectedTemplate);
+    textInput = template ? template.content : '';
+  };
 </script>
 
 <main>
   <h1>Svelte App</h1>
+
   <div>
     <label for="textbox">Text Input:</label>
     <textarea bind:value="{textInput}" id="textbox" rows="4" cols="50"></textarea>
   </div>
+    <TemplateChooser
+    {templates}
+    bind:selectedTemplate
+    on:templateChange="{populateTextbox}"
+  />
+    <ModelChooser
+    {models}
+    bind:selectedModel
+    bind:modelStatus
+    on:modelChange="{selectModel}"
+  />
   <div>
-    <label for="templates">Choose a template:</label>
-    <select bind:value="{selectedTemplate}" id="templates" on:change="{populateTextbox}">
-      <option value="">Select a template</option>
-      {#each templates as template}
-        <option value="{template.name}">{template.name}</option>
-      {/each}
-    </select>
+    <button on:click="{submitForm}">Submit</button>
   </div>
-<div>
-    <label for="models">Select a model:</label>
-    <select bind:value="{selectedModel}" id="models" on:change="{selectModel}">
-      <option value="">Select a model</option>
-      {#each models as model}
-        <option value="{model}">{model}</option>
-      {/each}
-    </select>
-  </div>
-  {#if modelStatus === 'loading'}
-    <div class="loading">Loading...</div>
-  {:else if modelStatus === 'success'}
-    <div class="success">Model loaded successfully.</div>
-  {:else if modelStatus === 'error'}
-    <div class="error">Failed to load model.</div>
-  {/if}
-  <div>
-    <button on:click="{submitForm(chatHistory)}">Submit</button>
-  </div>
-
 
   <div class="chat-history">
     <h2>Chat History</h2>
@@ -126,12 +115,6 @@
     padding: 0.5em;
   }
 
-  select {
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 0.5em;
-  }
 
   label {
     display: block;
