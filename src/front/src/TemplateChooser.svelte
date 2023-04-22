@@ -26,4 +26,8 @@
     border-radius: 4px;
     padding: 0.5em;
   }
+  label {
+    display: block;
+    margin-bottom: 0.5em;
+  }
 </style>

@@ -8,7 +8,7 @@
   const dispatch = createEventDispatcher();
 
   const changeModel = () => {
-    dispatch('modelChange', selectedModel);
+     dispatch('modelChange', selectedModel);
   };
 </script>
 
@@ -36,6 +36,7 @@
   .box {
     padding: 0.5em;
     margin-bottom: 0.5em;
+    border-radius: 4px;
   }
 
   select {
@@ -54,5 +55,10 @@
 
   .error {
     background-color: #d9534f;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5em;
   }
 </style>
