@@ -23,6 +23,7 @@
     let modelStatus = '';
 
     const selectModel = async () => {
+        console.log('b')
         modelStatus = 'loading';
         try {
             const response = await fetch('/model', {
@@ -81,6 +82,7 @@
             <ModelChooser
                 {models}
                 bind:selectedModel
+                bind:modelStatus
                 on:modelChange="{(e) => selectModel(e.detail)}"
             />
             <TemplateChooser

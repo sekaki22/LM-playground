@@ -8,6 +8,8 @@
     const dispatch = createEventDispatcher();
 
     const changeModel = () => {
+
+        console.log('a')
         dispatch('modelChange', selectedModel);
     };
 </script>
