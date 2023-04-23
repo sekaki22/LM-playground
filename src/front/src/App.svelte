@@ -55,28 +55,32 @@
     textInput = template ? template.content : '';
   };
 </script>
+<div class="layout">
+  <div class="main-content">
+    <main>
+        <h1>Svelte App</h1>
 
-<main>
-    <h1>Svelte App</h1>
+        <ChatWindow
+        {chatHistory}
+        bind:textInput
+        on:submitForm="{submitForm}"
+      />
 
-    <ChatWindow
-    {chatHistory}
-    bind:textInput
-    on:submitForm="{submitForm}"
-  />
+    </main>
+  </div>
+  <div class="right-column">
     <ModelChooser
-    {models}
-    bind:selectedModel
-    bind:modelStatus
-    on:modelChange="{selectModel}"
-  />
+      {models}
+      bind:selectedModel
+      on:modelChange="{(e) => selectModel(e.detail)}"
+    />
     <TemplateChooser
-    {templates}
-    bind:selectedTemplate
-    on:templateChange="{populateTextbox}"
-  />
-
-</main>
+        {templates}
+        bind:selectedTemplate
+        on:templateChange="{populateTextbox}"
+      />
+  </div>
+</div>
 
 <style>
   main {
@@ -91,7 +95,22 @@
     color: #59656f;
   }
 
+  .layout {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
 
+    .main-content {
+       flex: 1;
+       margin-right: 2rem;
+       border-right: 1px solid #ccc;
+  }
+
+    .right-column {
+      flex: 0 0 200px; /* You can adjust the width of the right column here */
+    }
 
 
 </style>
