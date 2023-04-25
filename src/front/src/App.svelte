@@ -15,7 +15,7 @@
         { id: 2, name: 'Template 2', content: 'Sample content for Template 2' },
     ];
 
-    const models = ['databricks/dolly-v2-3b', 'EleutherAI/pythia-2.8b'];
+    const models = ['databricks/dolly-v2-3b', 'EleutherAI/pythia-2.8b', 't5-small'];
 
     let chatHistory = [];
 

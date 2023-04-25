@@ -5,7 +5,6 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 import torch
-from numba import cuda
 from transformers import pipeline
 
 app = FastAPI()
