@@ -1,6 +1,6 @@
 # LM-playground
 
-Welcome to the Language Model Testing Webapp! This is a work-in-progress web application designed to help users interact with and test language models in an intuitive and user-friendly environment. With this webapp, you can easily evaluate the performance of language models on various tasks and gain insights into their strengths and weaknesses.
+This is a work-in-progress web application designed to help users interact with and test language models in an intuitive and user-friendly environment. With this webapp, you can easily evaluate the performance of language models on various tasks and gain insights into their strengths and weaknesses.
 
 
 ## Getting started
