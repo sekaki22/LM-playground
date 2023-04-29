@@ -18,7 +18,10 @@
                 <li class="{entry.type}">
                     <span class="label">{entry.type === 'input' ? 'You:' : 'Model:'}</span>
                     <div class="message-box">
-                        {@html entry.content.replace(/\n/g, '<br>')}
+                        {@html entry.content.replace(
+                                /\\n/g, '<br>'
+                            ).replace(/\"/g, '')
+                        }
                     </div>
                 </li>
             {/each}

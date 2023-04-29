@@ -10,20 +10,28 @@ from transformers import pipeline
 
 app = FastAPI()
 
-MODELS = ['databricks/dolly-v2-3b', 'EleutherAI/pythia-2.8b', 't5-small']
+MODELS = ['databricks/dolly-v2-3b',
+          'EleutherAI/pythia-2.8b',
+          't5-small',
+          'EleutherAI/pythia-160m',
+          'Aitrepreneur/wizardLM-7B-GPTQ-4bit-128g',
+          'TheBloke/wizardLM-7B-HF']
+
 CURRENT_MODEL = 'databricks/dolly-v2-3b'
 # get_text = lambda res: res[0]["generated_text"]
 
 
 def string_extractors():
     string_extractors = {model: lambda res: res[0]["generated_text"] for model in MODELS}
-    string_extractors['t5-small'] = lambda res: res
+    string_extractors['t5-small'] = lambda res: res[0]['translation_text']
     return string_extractors
 
 
 class ModelRequest(BaseModel):
     model: str
 
+class EvalRequest(BaseModel):
+    evalname: str
 
 def validate_user_input():
     """ This is executed when run from the command line """
@@ -46,7 +54,7 @@ def validate_user_input():
 
 
 generate_text = pipeline(model=CURRENT_MODEL,
-                         torch_dtype=torch.bfloat16,
+                         torch_dtype=torch.bfloat8,
                          trust_remote_code=True,
                          device_map="auto")
 
@@ -58,19 +66,34 @@ async def prompt(prompt: str):
     res = generate_text(prompt)
 
     get_text = string_extractors()[CURRENT_MODEL]
-    
     response_text = get_text(res)
     print(response_text)
 
     return response_text
 
 
-@app.get("/run_tests")
-async def test():
+@app.get("/eval/run")
+async def test(eval: EvalRequest):
     pass
 
 
-@app.post("/model")
+@app.get("/eval/list")
+async def listevals():
+    return [
+            'eval_1',
+            'eval_2',
+            'eval_3',
+            ]
+
+
+@app.get("/model/list")
+async def listmodels():
+    response = {'models': MODELS}
+
+    return response
+
+
+@app.post("/model/set")
 async def select_model(model: ModelRequest):
     # try:
     global generate_text
